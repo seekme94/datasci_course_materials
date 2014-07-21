@@ -10,7 +10,7 @@ access_token_secret = "3NG0a0j2Wc4nGh4Ux8m0MvAngVzhTScxE96qnZgqceAHb"
 
 _debug = 0
 
-oauth_token    = oauth.Token(key=access_token_key, secret=access_token_secret)
+oauth_token = oauth.Token(key=access_token_key, secret=access_token_secret)
 oauth_consumer = oauth.Consumer(key=api_key, secret=api_secret)
 
 signature_method_hmac_sha1 = oauth.SignatureMethod_HMAC_SHA1()
@@ -18,7 +18,7 @@ signature_method_hmac_sha1 = oauth.SignatureMethod_HMAC_SHA1()
 http_method = "GET"
 
 
-http_handler  = urllib.HTTPHandler(debuglevel=_debug)
+http_handler = urllib.HTTPHandler(debuglevel=_debug)
 https_handler = urllib.HTTPSHandler(debuglevel=_debug)
 
 '''
@@ -29,7 +29,7 @@ def twitterreq(url, method, parameters):
   req = oauth.Request.from_consumer_and_token(oauth_consumer,
                                              token=oauth_token,
                                              http_method=http_method,
-                                             http_url=url, 
+                                             http_url=url,
                                              parameters=parameters)
 
   req.sign_request(signature_method_hmac_sha1, oauth_consumer, oauth_token)
@@ -56,7 +56,7 @@ def fetchsamples():
   parameters = []
   response = twitterreq(url, "GET", parameters)
   for line in response:
-    print line.strip()
+    print(line.strip())
 
 if __name__ == '__main__':
   fetchsamples()

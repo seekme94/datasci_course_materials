@@ -16,6 +16,8 @@ def main():
   for line in tweet_file:
     tweet = json.loads(line) # Returns a dict object into tweet
     tweet_text = tweet.get("text") # Returns tweet text
+    if tweet_text == None:
+        continue
     words = tweet_text.split(" ")
     sent_score = 0
     for word in words:
@@ -23,7 +25,7 @@ def main():
       score = scores.get(word.lower()) # Turn to lower case for better matches
       if score != None:
         sent_score = sent_score + int(score) # Add score to total sentiment score
-    print str(sent_score)
+    print(str(sent_score))
 
 if __name__ == '__main__':
     main()

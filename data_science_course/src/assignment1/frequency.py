@@ -10,7 +10,10 @@ def main():
     tweets = {}
     for line in tweet_file:
         tweet = json.loads(line)  # Returns a dict object into tweet
-        tweet_text = tweet.get("text").lower()  # Returns tweet text in lower text
+        tweet_text = tweet.get("text")
+        if tweet_text == None:
+            continue
+        tweet_text = tweet_text.lower()  # Returns tweet text in lower text
         tweet_id = tweet.get("id")
         tweets[tweet_id] = tweet_text
 
@@ -26,7 +29,7 @@ def main():
             tweet_text = tweets[tweet]
             frequency = frequency + tweet_text.count(word)
         frequencies[word] = frequency / len(frequencies.items())
-        print word + " " + str(frequencies[word])
+        print (str(word.encode('cp850', errors='replace')) + " " + str(frequencies[word]))
 
 if __name__ == '__main__':
     main()

@@ -17,7 +17,10 @@ def main():
 
     for line in tweet_file:
         tweet = json.loads(line) # Returns a dict object into tweet
-        tweet_text = tweet.get("text").lower() # Returns tweet text in lower text
+        tweet_text = tweet.get("text")
+        if tweet_text == None:
+            continue
+        tweet_text = tweet_text.lower() # Returns tweet text in lower text
         tweet_id = tweet.get("id")
         tweets[tweet_id] = tweet_text
 
@@ -40,7 +43,8 @@ def main():
             tweet_text = tweets[tweet]
             if tweet_text.find(word) != -1:
                 sent_score = sent_score + tweet_scores[tweet]
-        print word + " " + str(sent_score)
+        word = word.encode('cp850', errors='replace')
+        print(str(word) + " " + str(sent_score))
 
 if __name__ == '__main__':
     main()
