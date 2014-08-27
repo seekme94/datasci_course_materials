@@ -24,7 +24,7 @@ def main():
                     # Only non-empty lists
                     if len(tag) > 0:
                         text = tag.get("text")
-                        #text = text.encode('ascii', 'ignore')
+                        text = text.encode('ascii', 'ignore')
                         count = 0
                         try:
                             count = hashtags[text]
