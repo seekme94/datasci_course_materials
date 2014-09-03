@@ -50,8 +50,8 @@ def twitterreq(url, method, parameters):
 
   return response
 
-def fetchsamples():
-  url = "https://stream.twitter.com/1/statuses/sample.json?q=obama"
+def fetchsamples(q):
+  url = "https://stream.twitter.com/1/statuses/sample.json?q=" + q
   
   parameters = []
   response = twitterreq(url, "GET", parameters)
@@ -59,4 +59,4 @@ def fetchsamples():
     print(line.strip())
 
 if __name__ == '__main__':
-  fetchsamples()
+  fetchsamples("afridi")
