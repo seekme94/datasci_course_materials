@@ -1,5 +1,8 @@
 import oauth2 as oauth
 import urllib2 as urllib
+import sys
+import csv
+import time
 
 # See assignment1.html instructions or README for how to get these credentials
 
@@ -50,7 +53,7 @@ def twitterreq(url, method, parameters):
 
   return response
 
-def fetchsamples(q):
+def fetch_stream(q):
   url = "https://stream.twitter.com/1/statuses/sample.json?q=" + q
   
   parameters = []
@@ -58,5 +61,44 @@ def fetchsamples(q):
   for line in response:
     print(line.strip())
 
+def fetch_follower_id_stream(user_id):
+  url = "https://api.twitter.com/1.1/followers/ids.json?cursor=-1&user_id=" + user_id
+  
+  parameters = []
+  response = twitterreq(url, "GET", parameters)
+  for line in response:
+    response = line.strip()
+    if "Rate limit exceeded" in response:
+      time.sleep(60)
+    print(response)
+
+def fetch_user(user_id):
+  url = "https://api.twitter.com/1.1/users/show.json?entities=false&user_id=" + user_id
+  
+  parameters = []
+  response = twitterreq(url, "GET", parameters)
+  for line in response:
+    print(line.strip())
+
 if __name__ == '__main__':
-  fetchsamples("afridi")
+    # -s = stream data, -f = followers, -u = user
+    command = "-x"
+    query = ""
+
+    with open("/home/owais/Datasets/afridi_nodes.txt", 'rb') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
+        header = reader.next()
+        for row in reader:
+            command = "-f"
+            query = row[0]
+            fetch_follower_id_stream(query)
+
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+        query = sys.argv[2]
+    if command == "-s":
+        fetch_stream(query)
+    elif command == "-f":
+        fetch_follower_id_stream(query)
+    elif command == "-u":
+        fetch_user(query)
